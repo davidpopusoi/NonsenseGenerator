@@ -1,7 +1,10 @@
 package nonsensegen.parts;
 
 import nonsensegen.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DictionaryParts extends AbstractParts{
 
 
@@ -24,9 +27,11 @@ public class DictionaryParts extends AbstractParts{
      * table
      * computer
      */
-    public DictionaryParts(Controller controller){
-        super(controller);
-    }
+    /* TODO: Da rivedere
+    @Autowired
+    public DictionaryParts(Controller service){
+        super(service);
+    }*/
 
     /**
      * Riempie la mappa prendendo dal file dictionary.txt

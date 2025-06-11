@@ -1,15 +1,9 @@
 package nonsensegen;
 
-public class Controller {
+import org.springframework.stereotype.Service;
 
-    private Container container;
-
-    /**
-     * Quello che interagisce con le API esterne (cioe' Google)
-     */
-    public Controller(Container container){
-        this.container = container;
-    }
+@Service
+public class Controller { // Da rinominare a qualcosa come "NonsenseService"
 
     public boolean verificaFraseInput(){
 

@@ -2,9 +2,10 @@ package nonsensegen;
 
 import nonsensegen.parts.DictionaryParts;
 import nonsensegen.parts.InputParts;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+@Component
 public class Template {
 
     /**
@@ -14,10 +15,10 @@ public class Template {
         ~~~ ~~~ il ~~~
      */
     private String str;
-    private Container cont;
 
-    public Template(Container cont){
-        this.cont = cont;
+    @Autowired
+    public Template(){
+
     }
 
     /**

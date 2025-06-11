@@ -10,10 +10,9 @@ import java.util.Map;
 public abstract class AbstractParts {
 
     protected Map<String, List<String>> map = new HashMap<>();
-    protected Controller controller;
 
-    public AbstractParts(Controller controller) {
-        this.controller = controller;
+    // Tolto Controller perche' la logica va fatta dentro il service (Controller)
+    public AbstractParts() {
         initializeMap();
     }
 
