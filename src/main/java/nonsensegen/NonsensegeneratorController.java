@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.logging.Logger;
 
-@Controller
+//@Controller
 public class NonsensegeneratorController {
 
     private static final Logger logger = Logger.getLogger(NonsensegeneratorController.class.getName());

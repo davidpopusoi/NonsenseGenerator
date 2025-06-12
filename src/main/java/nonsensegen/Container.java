@@ -5,7 +5,7 @@ import nonsensegen.parts.InputParts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class Container { // Eventualmente si protrebbe eliminare (dato che tanto il tutto viene richiesto al Controller (service)), ma per adesso la teniamo per raggruppare il tutto
 
     private String input; // Frase data dall'utente

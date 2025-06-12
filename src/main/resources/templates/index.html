@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Simple Input</title>
+    <meta charset="UTF-8">
+    <title>Google NLP Demo</title>
 </head>
 <body>
-<h1>Nonsense Generator Input</h1>
-<form action="/submit" method="post">
-    <label for="sentence">Enter a sentence:</label>
-    <input type="text" id="sentence" name="sentence" required>
-    <button type="submit">Submit</button>
+<h1>Analyze Sentence Syntax</h1>
+<form action="/analyze" method="post">
+    <input type="text" name="sentence" placeholder="Enter a sentence" required />
+    <button type="submit">Analyze</button>
 </form>
+
+<div th:if="${output}">
+    <h3>Result:</h3>
+    <pre th:text="${output}"></pre>
+</div>
 </body>
 </html>

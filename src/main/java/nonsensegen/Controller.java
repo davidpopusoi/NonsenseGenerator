@@ -2,7 +2,7 @@ package nonsensegen;
 
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class Controller { // Da rinominare a qualcosa come "NonsenseService"
 
     public boolean verificaFraseInput(){

@@ -1,25 +1,29 @@
 package nonsensegen;
 
+import com.google.auth.oauth2.GoogleCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Scanner;
 
 @SpringBootApplication
 public class NonsensegeneratorApplication implements CommandLineRunner {
 
+    /*
     private final Container container;
 
     @Autowired
     public NonsensegeneratorApplication(Container container) {
         this.container = container;
-    }
+    }*/
 
     public static void main(String[] args) {
+        // Fa partire l'applicazione springboot
         SpringApplication.run(NonsensegeneratorApplication.class, args);
-        System.out.println("Hello, World!");
     }
 
 
