@@ -2,6 +2,8 @@ package nonsensegen;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 //@Service
 public class Controller { // Da rinominare a qualcosa come "NonsenseService"
 
@@ -24,4 +26,5 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     public void controllaTossicita(){
 
     }
+
 }
