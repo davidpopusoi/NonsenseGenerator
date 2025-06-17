@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 // SOLO questa aggiunta: ora restituisce AnalyzeSyntaxResponse invece di String
@@ -17,8 +18,15 @@ public class GoogleNlpService {
     private String credentialsPath;
 
     public AnalyzeSyntaxResponse analyzeSyntax(String text) throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.fromStream(
-                new FileInputStream(credentialsPath));
+
+        GoogleCredentials credentials;
+
+        try (FileInputStream fis = new FileInputStream(credentialsPath)) {
+            credentials = GoogleCredentials.fromStream(fis)
+                    .createScoped("https://www.googleapis.com/auth/cloud-platform");
+        }
+
+        credentials.refreshIfExpired();
 
         LanguageServiceSettings settings = LanguageServiceSettings.newBuilder()
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))

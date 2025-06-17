@@ -19,9 +19,7 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
 
     private static final Pattern ENGLISH_WORDS = Pattern.compile("^[a-zA-Z]+$");
 
-    /**
-     *  Analisi frase, ritorna in output una String che contiene o la frase analizzata nelle sue parti, o un errore
-     */
+    // Metodo aggiunto per analisi e output ordinato
     public String analyzeSentence(String sentence) {
         try {
             AnalyzeSyntaxResponse response = googleNlpService.analyzeSyntax(sentence);
@@ -34,42 +32,42 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
                 return "Be sure to insert only English words.";
             }
 
-            if (isValidSentenceFlexible(response)){
-                // Suddivisione in categorie
-                inputParts.estraiCategorie(response);
+            if (isValidSentenceFlexible(response))
 
-                /**
-                 * OUTPUT
-                 */
-                // Output riga per riga (come ora)
-                StringBuilder analysis = new StringBuilder();
-                response.getTokensList().forEach(token ->
-                        analysis.append(token.getText().getContent())
-                                .append(" (")
-                                .append(token.getPartOfSpeech().getTag())
-                                .append(")\n")
-                );
+            // Suddivisione in categorie
+            inputParts.estraiCategorie(response);
 
-                // Sezione parole non valide (tag X)
-                if (!inputParts.getInvalid().isEmpty()) {
 
-                }
+            /**
+             * OUTPUT
+             */
 
-                // Tabella categorie
-                analysis.append(inputParts.getTabellaCategorie());
 
-                return analysis.toString();
+            // Output riga per riga (come ora)
+            StringBuilder analysis = new StringBuilder();
+            response.getTokensList().forEach(token ->
+                    analysis.append(token.getText().getContent())
+                            .append(" (")
+                            .append(token.getPartOfSpeech().getTag())
+                            .append(")\n")
+            );
+
+            // Sezione parole non valide (tag X)
+            if (!inputParts.getInvalid().isEmpty()) {
+
             }
-            return "The provided sentence is incorrect";
 
+            // Tabella categorie
+            analysis.append(inputParts.getTabellaCategorie());
 
+            return analysis.toString();
         } catch (Exception e) {
             return "Error analyzing text: " + e.getMessage();
         }
     }
 
     /**
-     * Controlla se la frase e' in inglese
+     *
      */
     public boolean isEnglishSentence(String sentence) {
         try (LanguageServiceClient language = LanguageServiceClient.create()) {
