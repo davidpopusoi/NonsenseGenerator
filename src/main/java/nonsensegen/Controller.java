@@ -17,12 +17,20 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     @Autowired
     private InputParts inputParts;
 
+    // TODO: CONTROLLO TOSSICITA' (con metodo API moderateText)
+    public void analyzeToxicity(){
+
+    }
+
     private static final Pattern ENGLISH_WORDS = Pattern.compile("^[a-zA-Z]+$");
 
     // Metodo aggiunto per analisi e output ordinato
     public String analyzeSentence(String sentence) {
         try {
             AnalyzeSyntaxResponse response = googleNlpService.analyzeSyntax(sentence);
+
+
+            // TODO: "She doesn't like broccoli." dice che non e' inglese, "asdf jkl; qwop" e' valida, "Cane mangia tavolo." e' valida
 
             if (!isEnglishSentence(sentence)) {
                 return "Sorry, at the moment only English language is supported.";
@@ -32,57 +40,51 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
                 return "Be sure to insert only English words.";
             }
 
-            if (isValidSentenceFlexible(response))
-
-            // Suddivisione in categorie
-            inputParts.estraiCategorie(response);
-
-
-            /**
-             * OUTPUT
-             */
+            if (isValidSentenceFlexible(response)){
+                // Suddivisione in categorie
+                inputParts.estraiCategorie(response);
 
 
-            // Output riga per riga (come ora)
-            StringBuilder analysis = new StringBuilder();
-            response.getTokensList().forEach(token ->
-                    analysis.append(token.getText().getContent())
-                            .append(" (")
-                            .append(token.getPartOfSpeech().getTag())
-                            .append(")\n")
-            );
+                /**
+                 * OUTPUT
+                 */
 
-            // Sezione parole non valide (tag X)
-            if (!inputParts.getInvalid().isEmpty()) {
 
+                // Output riga per riga (come ora)
+                StringBuilder analysis = new StringBuilder();
+                response.getTokensList().forEach(token ->
+                        analysis.append(token.getText().getContent())
+                                .append(" (")
+                                .append(token.getPartOfSpeech().getTag())
+                                .append(")\n")
+                );
+
+                // Sezione parole non valide (tag X)
+                if (!inputParts.getInvalid().isEmpty()) {
+
+                }
+
+                // Tabella categorie
+                analysis.append(inputParts.getTabellaCategorie());
+
+                return analysis.toString();
             }
 
-            // Tabella categorie
-            analysis.append(inputParts.getTabellaCategorie());
-
-            return analysis.toString();
+            return "Sentence is incorrect";
         } catch (Exception e) {
             return "Error analyzing text: " + e.getMessage();
         }
     }
 
     /**
-     *
+     * Controlla se la frase e' in inglese
      */
     public boolean isEnglishSentence(String sentence) {
-        try (LanguageServiceClient language = LanguageServiceClient.create()) {
-            Document doc = Document.newBuilder()
-                    .setContent(sentence)
-                    .setType(Document.Type.PLAIN_TEXT)
-                    .build();
+        // USARE IL METODO DA googleNlpService E NON CREATE ALTRE ISTANZE DI LanguageServiceClient
+        AnalyzeSyntaxResponse response = googleNlpService.analyzeSyntax(sentence);
+        String detectedLanguage = response.getLanguage(); // "en", "it", etc.
 
-            AnalyzeSyntaxResponse response = language.analyzeSyntax(doc);
-            String detectedLanguage = response.getLanguage(); // "en", "it", etc.
-
-            return detectedLanguage.equals("en");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return detectedLanguage.equals("en");
     }
 
     /**
@@ -136,21 +138,4 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
         // At least 3 meaningful tokens, and a subject + verb
         return meaningfulTokens >= 3 && hasSubject && hasVerb;
     }
-
-    public boolean verificaFraseInput(){
-        return false;
-    }
-
-    public void dividiInputParti(){
-
-    }
-
-    public void prendiPartiDizionario(){
-
-    }
-
-    public void controllaTossicita(){
-
-    }
-
 }
