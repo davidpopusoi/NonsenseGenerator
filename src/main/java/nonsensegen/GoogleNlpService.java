@@ -6,18 +6,17 @@ import com.google.cloud.language.v1.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+// SOLO questa aggiunta: ora restituisce AnalyzeSyntaxResponse invece di String
 @Service
 public class GoogleNlpService {
 
     @Value("${google.credentials.path}")
     private String credentialsPath;
 
-    public String analyzeSyntax(String text) throws IOException {
-
+    public AnalyzeSyntaxResponse analyzeSyntax(String text) throws IOException {
         GoogleCredentials credentials = GoogleCredentials.fromStream(
                 new FileInputStream(credentialsPath));
 
@@ -31,17 +30,7 @@ public class GoogleNlpService {
                     .setType(Document.Type.PLAIN_TEXT)
                     .build();
 
-            AnalyzeSyntaxResponse response = language.analyzeSyntax(doc);
-
-            StringBuilder result = new StringBuilder();
-            for (Token token : response.getTokensList()) {
-                result.append(token.getText().getContent())
-                        .append(" (")
-                        .append(token.getPartOfSpeech().getTag())
-                        .append(")\n");
-            }
-
-            return result.toString();
+            return language.analyzeSyntax(doc);
         }
     }
 }
