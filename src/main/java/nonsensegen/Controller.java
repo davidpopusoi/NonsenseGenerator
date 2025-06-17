@@ -1,10 +1,12 @@
 package nonsensegen;
 
-import com.google.cloud.language.v1.AnalyzeSyntaxResponse;
+import com.google.cloud.language.v1.*;
 import nonsensegen.parts.InputParts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -17,64 +19,140 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
 
     private static final Pattern ENGLISH_WORDS = Pattern.compile("^[a-zA-Z]+$");
 
-    // Metodo aggiunto per analisi e output ordinato
-    public String analizzaFrase(String sentence) {
+    /**
+     *  Analisi frase, ritorna in output una String che contiene o la frase analizzata nelle sue parti, o un errore
+     */
+    public String analyzeSentence(String sentence) {
         try {
             AnalyzeSyntaxResponse response = googleNlpService.analyzeSyntax(sentence);
 
-            String detectedLanguage = response.getLanguage();
-            if (!"en".equalsIgnoreCase(detectedLanguage)) {
+            if (!isEnglishSentence(sentence)) {
                 return "Sorry, at the moment only English language is supported.";
             }
 
-            boolean englishWords = false;
-            boolean foreignwords = false;
-
-            for (var token : response.getTokensList()) {
-                String word = token.getText().getContent();
-                String tag = token.getPartOfSpeech().getTag().name();
-
-                if (ENGLISH_WORDS.matcher(word).matches()) {
-                    englishWords = true;
-                } else if (word.trim().length() > 0 && !"PUNCT".equals(tag)) {
-                    foreignwords = true;
-                }
-            }
-            if (englishWords && foreignwords) {
+            if (hasForeign(response)) {
                 return "Be sure to insert only English words.";
             }
 
-            // Suddivisione in categorie
-            inputParts.estraiCategorie(response);
+            if (isValidSentenceFlexible(response)){
+                // Suddivisione in categorie
+                inputParts.estraiCategorie(response);
 
-            // Output riga per riga (come ora)
-            StringBuilder analysis = new StringBuilder();
-            response.getTokensList().forEach(token ->
-                    analysis.append(token.getText().getContent())
-                            .append(" (")
-                            .append(token.getPartOfSpeech().getTag())
-                            .append(")\n")
-            );
+                /**
+                 * OUTPUT
+                 */
+                // Output riga per riga (come ora)
+                StringBuilder analysis = new StringBuilder();
+                response.getTokensList().forEach(token ->
+                        analysis.append(token.getText().getContent())
+                                .append(" (")
+                                .append(token.getPartOfSpeech().getTag())
+                                .append(")\n")
+                );
 
-            // Sezione parole non valide (tag X)
-            if (!inputParts.getInvalid().isEmpty()) {
+                // Sezione parole non valide (tag X)
+                if (!inputParts.getInvalid().isEmpty()) {
+
+                }
+
+                // Tabella categorie
+                analysis.append(inputParts.getTabellaCategorie());
+
+                return analysis.toString();
             }
+            return "The provided sentence is incorrect";
 
-            // Tabella categorie
-            analysis.append(inputParts.getTabellaCategorie());
 
-            return analysis.toString();
         } catch (Exception e) {
             return "Error analyzing text: " + e.getMessage();
         }
     }
-    /*
+
+    /**
+     * Controlla se la frase e' in inglese
+     */
+    public boolean isEnglishSentence(String sentence) {
+        try (LanguageServiceClient language = LanguageServiceClient.create()) {
+            Document doc = Document.newBuilder()
+                    .setContent(sentence)
+                    .setType(Document.Type.PLAIN_TEXT)
+                    .build();
+
+            AnalyzeSyntaxResponse response = language.analyzeSyntax(doc);
+            String detectedLanguage = response.getLanguage(); // "en", "it", etc.
+
+            return detectedLanguage.equals("en");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Controlla se la frase ha elementi estranei (spazi ecc.)
+     */
+    public boolean hasForeign(AnalyzeSyntaxResponse response){
+        boolean englishWords = false;
+        boolean foreignWords = false;
+
+        for (var token : response.getTokensList()) {
+            String word = token.getText().getContent();
+            String tag = token.getPartOfSpeech().getTag().name();
+
+            if (ENGLISH_WORDS.matcher(word).matches()) {
+                englishWords = true;
+            } else if (word.trim().length() > 0 && !"PUNCT".equals(tag)) {
+                foreignWords = true;
+            }
+        }
+
+        return englishWords && foreignWords;
+    }
+
+    /**
+     * Controlla se la struttura della frase e' corretta
+     */
+    public boolean isValidSentenceFlexible(AnalyzeSyntaxResponse response) {
+        List<Token> tokens = response.getTokensList();
+
+        boolean hasSubject = false;
+        boolean hasVerb = false;
+        int meaningfulTokens = 0;
+
+        for (Token token : tokens) {
+            String dep = token.getDependencyEdge().getLabel().toString();
+            PartOfSpeech.Tag tag = token.getPartOfSpeech().getTag();
+
+            if (dep.equals("NSUBJ") || dep.equals("NSUBJPASS")) {
+                hasSubject = true;
+            }
+
+            if (tag == PartOfSpeech.Tag.VERB) {
+                hasVerb = true;
+            }
+
+            if (tag != PartOfSpeech.Tag.X && tag != PartOfSpeech.Tag.PUNCT) {
+                meaningfulTokens++;
+            }
+        }
+
+        // At least 3 meaningful tokens, and a subject + verb
+        return meaningfulTokens >= 3 && hasSubject && hasVerb;
+    }
+
     public boolean verificaFraseInput(){
         return false;
     }
-    public void dividiInputParti(){}
-    public void prendiPartiDizionario(){}
-    public void controllaTossicita(){}
 
-     */
+    public void dividiInputParti(){
+
+    }
+
+    public void prendiPartiDizionario(){
+
+    }
+
+    public void controllaTossicita(){
+
+    }
+
 }

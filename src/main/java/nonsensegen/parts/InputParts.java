@@ -9,14 +9,6 @@ import java.util.*;
 @Component
 public class InputParts extends AbstractParts {
 
-    private List<String> adjectives = new ArrayList<>();
-    private List<String> nouns = new ArrayList<>();
-    private List<String> verbs = new ArrayList<>();
-    private List<String> numbers = new ArrayList<>();
-    private List<String> punct = new ArrayList<>();
-    private List<String> invalid = new ArrayList<>();
-    private List<String> others = new ArrayList<>();
-
     // Estrae e riempie le categorie, unendo VERB+PRT e PRT+VERB
     public void estraiCategorie(AnalyzeSyntaxResponse response) {
         adjectives.clear(); nouns.clear(); verbs.clear();

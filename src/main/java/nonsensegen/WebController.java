@@ -18,7 +18,7 @@ public class WebController {
 
     @PostMapping("/analyze")
     public String analyze(@RequestParam("sentence") String sentence, Model model) {
-        String result = controller.analizzaFrase(sentence);
+        String result = controller.analyzeSentence(sentence);
         model.addAttribute("output", result);
         return "index";
     }
