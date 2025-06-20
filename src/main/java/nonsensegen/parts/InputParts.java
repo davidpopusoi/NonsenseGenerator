@@ -11,8 +11,8 @@ public class InputParts extends AbstractParts {
 
     // Estrae e riempie le categorie, unendo VERB+PRT e PRT+VERB
     public void estraiCategorie(AnalyzeSyntaxResponse response) {
-        adjectives.clear(); nouns.clear(); verbs.clear();
-        numbers.clear(); punct.clear(); invalid.clear(); others.clear();
+        adjective.clear(); noun.clear(); verb.clear();
+        number.clear(); punct.clear(); invalid.clear(); other.clear();
 
         List<Token> tokens = response.getTokensList();
         int i = 0;
@@ -24,7 +24,7 @@ public class InputParts extends AbstractParts {
             if (tag.equals("PRT") && i + 1 < tokens.size()
                     && tokens.get(i + 1).getPartOfSpeech().getTag().name().equals("VERB")) {
                 String combined = word + " " + tokens.get(i + 1).getText().getContent();
-                verbs.add(combined);
+                verb.add(combined);
                 i += 2;
                 continue;
             }
@@ -33,26 +33,26 @@ public class InputParts extends AbstractParts {
             if (tag.equals("VERB") && i + 1 < tokens.size()
                     && tokens.get(i + 1).getPartOfSpeech().getTag().name().equals("PRT")) {
                 String combined = word + " " + tokens.get(i + 1).getText().getContent();
-                verbs.add(combined);
+                verb.add(combined);
                 i += 2;
                 continue;
             }
 
             // Normale categorizzazione
             switch (tag) {
-                case "ADJ": adjectives.add(word); break;
-                case "NOUN": nouns.add(word); break;
-                case "VERB": verbs.add(word); break;
-                case "NUM": numbers.add(word); break;
+                case "ADJ": adjective.add(word); break;
+                case "NOUN": noun.add(word); break;
+                case "VERB": verb.add(word); break;
+                case "NUM": number.add(word); break;
                 case "PUNCT": punct.add(word); break;
                 case "X":
                     if (word.matches("^[A-Za-z]+$")) {
-                        others.add(word + " (X)");
+                        other.add(word + " (X)");
                     } else {
                         invalid.add(word);
                     }
                     break;
-                default: others.add(word + " (" + tag + ")"); break;
+                default: other.add(word + " (" + tag + ")"); break;
             }
             i++;
         }
@@ -67,20 +67,20 @@ public class InputParts extends AbstractParts {
     public String getTabellaCategorie() {
         StringBuilder table = new StringBuilder();
         table.append("\nSYNTAX TABLE\n");
-        if (!adjectives.isEmpty()) table.append("ADJECTIVES:      ").append(String.join("   ", adjectives)).append("\n");
-        if (!nouns.isEmpty()) table.append("NOUNS:           ").append(String.join("   ", nouns)).append("\n");
-        if (!verbs.isEmpty()) table.append("VERBS:           ").append(String.join("   ", verbs)).append("\n");
-        if (!numbers.isEmpty()) table.append("NUMBERS:         ").append(String.join("   ", numbers)).append("\n");
+        if (!adjective.isEmpty()) table.append("ADJECTIVES:      ").append(String.join("   ", adjective)).append("\n");
+        if (!noun.isEmpty()) table.append("NOUNS:           ").append(String.join("   ", noun)).append("\n");
+        if (!verb.isEmpty()) table.append("VERBS:           ").append(String.join("   ", verb)).append("\n");
+        if (!number.isEmpty()) table.append("NUMBERS:         ").append(String.join("   ", number)).append("\n");
         if (!punct.isEmpty()) table.append("PUNCT:           ").append(String.join("   ", punct)).append("\n");
         if (!invalid.isEmpty()) table.append("INVALID WORDS:   ").append(String.join("   ", invalid)).append("\n");
-        if (!others.isEmpty()) table.append("OTHERS:          ").append(String.join("   ", others)).append("\n");
+        if (!other.isEmpty()) table.append("OTHERS:          ").append(String.join("   ", other)).append("\n");
         return table.toString();
     }
 
 
     // Il resto del file NON toccato!
     @Override
-    public void fillMap() {
+    public void fillParts() {
         // Devo chiamare controller
     }
 }
