@@ -1,19 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Google NLP Demo</title>
-</head>
-<body>
-<h1>Analyze Sentence Syntax</h1>
-<form action="/analyze" method="post">
-    <input type="text" name="sentence" placeholder="Enter a sentence" required />
-    <button type="submit">Analyze</button>
-</form>
+    <head>
+        <meta charset="UTF-8">
+        <title>Nonsense Generator Demo</title>
+        <link rel="stylesheet" th:href="@{/css/styles.css}">
+    </head>
+    <script defer>
+        async function generateSentence() {
+          try {
+            const response = await fetch('/api/sentence');
+            if (response.ok) {
+              const data = await response.text();
+              document.getElementById('generated').textContent = data;
+            } else {
+              console.error('Error fetching sentence');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        }
+    </script>
+    <body>
+        <div class="container">
+            <h1 class="title">Nonsense Generator</h1>
 
-<div th:if="${output}">
-    <h3>Result:</h3>
-    <pre th:text="${output}"></pre>
-</div>
-</body>
+            <form action="/analyze" method="post" th:if="${sentence == null}" class="form-row">
+                <input type="text" name="sentence" placeholder="Enter a sentence" required/>
+                <button type="submit">Analyze</button>
+            </form>
+
+            <div class="container" th:if="${sentence != null}" >
+                <h3 class="label">Entered sentence:</h3>
+
+                <div class="analyze-sentence">
+                    <span th:text="${sentence}"></span>
+                </div>
+
+                <div class="confirm-row" th:if="${showConfirmation}">
+                    <span class="confirm-text">Do you want to analyze this sentence?</span>
+                    <div class="confirm-buttons">
+                        <form action="/analyze" method="post" style="display:inline;">
+                            <input type="hidden" name="sentence" th:value="${sentence}"/>
+                            <button type="submit" name="confirmed" value="yes" class="btn-yesno">Yes</button>
+                            <button type="submit" name="confirmed" value="no" class="btn-yesno">No</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SENTENCE ANALYSIS -->
+            <div class="analysis-container" th:if="${output}">
+                <h3>Result:</h3>
+                <pre th:text="${output}"></pre>
+                <p id="generated" class="text-lg mb-6" th:text="${generated != null} ? ${generated} : 'No sentence generated yet.'">
+                    No sentence generated yet.
+                </p>
+            </div>
+
+            <div class="buttons-row" th:if="${output}">
+                <button onclick="generateSentence()">
+                    Generate New Sentence
+                </button>
+                <form th:action="@{/}" method="get">
+                    <button type="submit">
+                        Go back
+                    </button>
+                </form>
+                <form th:if="${showDownload}" action="#" th:action="@{/download}" method="get">
+                    <input type="hidden" name="sentence" th:value="${sentence}" />
+                    <button type="submit" class="btn btn-primary">Download Analysis</button>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>

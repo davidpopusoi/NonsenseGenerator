@@ -26,6 +26,8 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     private DictionaryParts dictionaryParts;
     @Autowired
     private Template template;
+    @Autowired
+    public History history;
 
     private static final Pattern ENGLISH_WORDS = Pattern.compile("^[a-zA-Z]+$");
 
@@ -71,11 +73,6 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
                 analysis.append("\n")
                         .append(analyzeModeration(googleNlpService.moderateText(sentence)));
 
-                // TODO: ADD BUTTON FOR TEMPLATE
-                String finalTemplate = template.getTemplate(dictionaryParts, inputParts);
-                analysis.append("\nTEMPLATE\n")
-                        .append(finalTemplate);
-
                 return analysis.toString();
             }
 
@@ -85,6 +82,12 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
             System.out.println(e);
             return "Error analyzing text: " + e.getMessage();
         }
+    }
+
+    public String generateTemplate(){
+        String finalTemplate = template.getTemplate(dictionaryParts, inputParts);
+        history.saveFinalToHistory(finalTemplate);
+        return finalTemplate;
     }
 
     /**
