@@ -1,24 +1,53 @@
 package nonsensegen.parts;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class AbstractParts {
 
-    //protected Map<String, List<String>> map = new HashMap<>();
-    protected List<String> adjective = new ArrayList<>();
-    protected List<String> noun = new ArrayList<>();
-    protected List<String> plural_noun = new ArrayList<>();
-    protected List<String> verb = new ArrayList<>();
-    protected List<String> number = new ArrayList<>();
-    protected List<String> punct = new ArrayList<>();
-    protected List<String> invalid = new ArrayList<>();
-    protected List<String> other = new ArrayList<>();
+    protected Map<String, List<String>> partMap = new HashMap<>();
 
-    // Tolto Controller perche' la logica va fatta dentro il service (Controller)
     public AbstractParts() {
-
+        fillParts();
     }
 
-    public abstract void fillParts();
+    protected abstract void fillParts();
+
+    /**
+     * Returns the category if found with the provided String, otherwise adds the String as a key with a new List to the map
+     */
+    public List<String> getCategoryOrCreate(String category) {
+        return partMap.computeIfAbsent(category.toLowerCase(), k -> new ArrayList<>());
+    }
+
+    public List<String> getVerb(){
+        return this.getCategoryOrCreate("verb");
+    }
+
+    public List<String> getNoun(){
+        return this.getCategoryOrCreate("noun");
+    }
+
+    public List<String> getPluralNoun(){
+        return this.getCategoryOrCreate("pluralnoun");
+    }
+
+    public List<String> getAdjective(){
+        return this.getCategoryOrCreate("adjective");
+    }
+
+    public List<String> getNumber(){
+        return this.getCategoryOrCreate("number");
+    }
+
+    public List<String> getPunct(){
+        return this.getCategoryOrCreate("punct");
+    }
+
+    public List<String> getOther(){
+        return this.getCategoryOrCreate("other");
+    }
+
+    public List<String> getInvalid(){
+        return this.getCategoryOrCreate("invalid");
+    }
 }

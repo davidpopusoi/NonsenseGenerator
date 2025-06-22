@@ -9,10 +9,11 @@ import java.util.*;
 @Component
 public class InputParts extends AbstractParts {
 
-    // Estrae e riempie le categorie, unendo VERB+PRT e PRT+VERB
-    public void estraiCategorie(AnalyzeSyntaxResponse response) {
-        adjective.clear(); noun.clear(); verb.clear();
-        number.clear(); punct.clear(); invalid.clear(); other.clear();
+    /**
+     * Extracts and fills the categories, unifying VERB+PRT and PRT+VERB
+     */
+    public void extractParts(AnalyzeSyntaxResponse response) {
+        partMap.clear();
 
         List<Token> tokens = response.getTokensList();
         int i = 0;
@@ -24,7 +25,9 @@ public class InputParts extends AbstractParts {
             if (tag.equals("PRT") && i + 1 < tokens.size()
                     && tokens.get(i + 1).getPartOfSpeech().getTag().name().equals("VERB")) {
                 String combined = word + " " + tokens.get(i + 1).getText().getContent();
-                verb.add(combined);
+
+                this.getVerb().add(combined);
+
                 i += 2;
                 continue;
             }
@@ -33,54 +36,48 @@ public class InputParts extends AbstractParts {
             if (tag.equals("VERB") && i + 1 < tokens.size()
                     && tokens.get(i + 1).getPartOfSpeech().getTag().name().equals("PRT")) {
                 String combined = word + " " + tokens.get(i + 1).getText().getContent();
-                verb.add(combined);
+
+                this.getVerb().add(combined);
+
                 i += 2;
                 continue;
             }
 
             // Normale categorizzazione
             switch (tag) {
-                case "ADJ": adjective.add(word); break;
-                case "NOUN": noun.add(word); break;
-                case "VERB": verb.add(word); break;
-                case "NUM": number.add(word); break;
-                case "PUNCT": punct.add(word); break;
+                case "ADJ": this.getAdjective().add(word); break;
+                case "NOUN": this.getNoun().add(word); break;
+                case "VERB": this.getVerb().add(word); break;
+                case "NUM": this.getNumber().add(word); break;
+                case "PUNCT": this.getPunct().add(word); break;
                 case "X":
                     if (word.matches("^[A-Za-z]+$")) {
-                        other.add(word + " (X)");
+                        this.getOther().add(word + " (X)");
                     } else {
-                        invalid.add(word);
+                        this.getInvalid().add(word);
                     }
                     break;
-                default: other.add(word + " (" + tag + ")"); break;
+                default: this.getOther().add(word + " (" + tag + ")"); break;
             }
             i++;
         }
-    }
-
-    //invalid words
-    public List<String> getInvalid() {
-        return invalid;
     }
 
     // Tabella testuale delle categorie
     public String getTabellaCategorie() {
         StringBuilder table = new StringBuilder();
         table.append("\nSYNTAX TABLE\n");
-        if (!adjective.isEmpty()) table.append("ADJECTIVES:      ").append(String.join("   ", adjective)).append("\n");
-        if (!noun.isEmpty()) table.append("NOUNS:           ").append(String.join("   ", noun)).append("\n");
-        if (!verb.isEmpty()) table.append("VERBS:           ").append(String.join("   ", verb)).append("\n");
-        if (!number.isEmpty()) table.append("NUMBERS:         ").append(String.join("   ", number)).append("\n");
-        if (!punct.isEmpty()) table.append("PUNCT:           ").append(String.join("   ", punct)).append("\n");
-        if (!invalid.isEmpty()) table.append("INVALID WORDS:   ").append(String.join("   ", invalid)).append("\n");
-        if (!other.isEmpty()) table.append("OTHERS:          ").append(String.join("   ", other)).append("\n");
+        if (!getAdjective().isEmpty()) table.append("ADJECTIVES:      ").append(String.join("   ", getAdjective())).append("\n");
+        if (!getNoun().isEmpty()) table.append("NOUNS:           ").append(String.join("   ", getNoun())).append("\n");
+        if (!getVerb().isEmpty()) table.append("VERBS:           ").append(String.join("   ", getVerb())).append("\n");
+        if (!getNumber().isEmpty()) table.append("NUMBERS:         ").append(String.join("   ", getNumber())).append("\n");
+        if (!getPunct().isEmpty()) table.append("PUNCT:           ").append(String.join("   ", getPunct())).append("\n");
+        if (!getInvalid().isEmpty()) table.append("INVALID WORDS:   ").append(String.join("   ", getInvalid())).append("\n");
+        if (!getOther().isEmpty()) table.append("OTHERS:          ").append(String.join("   ", getOther())).append("\n");
         return table.toString();
     }
 
-
-    // Il resto del file NON toccato!
     @Override
     public void fillParts() {
-        // Devo chiamare controller
     }
 }

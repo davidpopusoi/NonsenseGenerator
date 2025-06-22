@@ -1,6 +1,5 @@
 package nonsensegen;
 
-import nonsensegen.parts.AbstractParts;
 import nonsensegen.parts.DictionaryParts;
 import nonsensegen.parts.InputParts;
 import org.slf4j.Logger;
@@ -8,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,7 +41,7 @@ public class Template {
                 return;
             }*/
 
-            // suddivide la lista di template in tre "sottoliste", ciascuna contenente una diversa parte del template
+            // Suddivide la lista di template in tre "sottoliste", ciascuna contenente una diversa parte del template
             Random randTempl = new Random();
             List<String> parte1 = templates.subList(2, 99);   // dalla riga 3 alla 99 inclusa
             List<String> parte2 = templates.subList(102, 198); // dalla riga 103 alla 198 inclusa
@@ -63,26 +61,17 @@ public class Template {
         }
     }
 
-    // TODO: MANCA USARE LE InputParts
     public String fillTemplate(String template, DictionaryParts dictionaryParts, InputParts inputParts) {
-        Matcher matcher = Pattern.compile("\\[(.+?)]").matcher(template);
+        Pattern pattern = Pattern.compile("\\[(\\w+)]");
+        Matcher matcher = pattern.matcher(template);
         StringBuffer result = new StringBuffer();
 
         while (matcher.find()) {
+            String category = matcher.group(1).toLowerCase();
+            String replacement = getReplacement(category, 0.5, dictionaryParts, inputParts);
 
-
-
-            String key = matcher.group(1); // e.g. "plural_noun", "noun", "verb"
-
-            LOGGER.info("IM INSIDE: " + key);
-
-            List<String> words = getWordListForKey(key, dictionaryParts);
-
-            // TODO: SISTEMARE QUA, non mette le parole dentro
-
-            String replacement = (words != null && !words.isEmpty())
-                    ? "*" + words.get(random.nextInt(words.size())) + "*"
-                    : "[" + key + "]"; // fallback if no list found or empty
+            // DEBUG
+            LOGGER.info("Placeholder: " + category + " | Replacement: " + replacement);
 
             matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
         }
@@ -91,20 +80,24 @@ public class Template {
         return result.toString();
     }
 
-    // TODO: QUA PRENDE DIRETTAMENTE LE LISTE CHE ESISTONO NELLA CLASSE, FORSE MEGLIO FARE UNA MAPPA DATO CHE NON FUNZIONA
-    @SuppressWarnings("unchecked")
-    private List<String> getWordListForKey(String key, DictionaryParts dictionaryParts) {
-        try {
-            Field field = AbstractParts.class.getDeclaredField(key);
-            field.setAccessible(true);
 
-            LOGGER.info(field.getName());
+    private String getReplacement(String category, double dictionaryRatio, DictionaryParts dictionaryParts, InputParts inputParts){
+        boolean useDict = random.nextDouble() < dictionaryRatio;
 
-            return (List<String>) field.get(dictionaryParts);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            // Field not found or inaccessible, return null
-            LOGGER.info("FIELD NOT FOUND: " + key);
-            return null;
+        List<String> dictList = dictionaryParts.getCategoryOrCreate(category);
+        List<String> inputList = inputParts.getCategoryOrCreate(category);
+
+        List<String> primary = useDict ? dictList : inputList;
+        List<String> fallback = useDict ? inputList : dictList;
+
+        if (!primary.isEmpty()) {
+            LOGGER.info("SELECTED FROM primary, # of parts: " + primary.size());
+            return primary.get(random.nextInt(primary.size()));
+        } else if (!fallback.isEmpty()) {
+            LOGGER.info("SELECTED FROM fallback, # of parts: " + fallback.size());
+            return fallback.get(random.nextInt(fallback.size()));
+        } else {
+            return "[N/A]";
         }
     }
 }

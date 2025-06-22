@@ -21,7 +21,7 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     @Autowired
     private GoogleNlpService googleNlpService;
     @Autowired
-    private InputParts inputParts;
+    public InputParts inputParts;
     @Autowired
     private DictionaryParts dictionaryParts;
     @Autowired
@@ -29,15 +29,7 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
 
     private static final Pattern ENGLISH_WORDS = Pattern.compile("^[a-zA-Z]+$");
 
-    // Metodo aggiunto per analisi e output ordinato
     public String analyzeSentence(String sentence) {
-
-
-        // TODO: TEST TEMPLATE, MANCA AGGIUNTA DEI TERMINI InputParts
-
-        LOGGER.info(template.getTemplate(dictionaryParts, inputParts));
-
-
         LOGGER.info("Attempting to analyze: \"" + sentence + "\"");
 
         try {
@@ -52,14 +44,10 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
             }
 
             if (isValidSentenceFlexible(response)){
-                // Suddivisione in categorie
-                inputParts.estraiCategorie(response);
+                // Load the parts found in the input sentence
+                inputParts.extractParts(response);
 
-
-                /**
-                 * OUTPUT
-                 */
-
+                // OUTPUT ----------------
 
                 // Output riga per riga (come ora)
                 StringBuilder analysis = new StringBuilder();
@@ -83,18 +71,24 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
                 analysis.append("\n")
                         .append(analyzeModeration(googleNlpService.moderateText(sentence)));
 
+                // TODO: ADD BUTTON FOR TEMPLATE
+                String finalTemplate = template.getTemplate(dictionaryParts, inputParts);
+                analysis.append("\nTEMPLATE\n")
+                        .append(finalTemplate);
+
                 return analysis.toString();
             }
 
             // TODO: "Killing people is bad" e' incorrect
             return "Sentence is incorrect";
         } catch (Exception e) {
+            System.out.println(e);
             return "Error analyzing text: " + e.getMessage();
         }
     }
 
     /**
-     * Controlla se la frase e' in inglese
+     * Check if the sentence is in English
      */
     public boolean isEnglishSentence(String sentence) {
         // USARE IL METODO DA googleNlpService E NON CREATE ALTRE ISTANZE DI LanguageServiceClient
@@ -105,7 +99,7 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     }
 
     /**
-     * Controlla se la frase ha elementi estranei (spazi ecc.)
+     * Check if the sentence has foreign elements (rogue spaces, etc.)
      */
     public boolean hasForeign(AnalyzeSyntaxResponse response){
         boolean englishWords = false;
@@ -126,9 +120,8 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     }
 
     /**
-     * Controlla se la struttura della frase e' corretta
+     * Check if the sentence's structure is "correct"
      */
-
     public static double calculateCorrectnessScore(AnalyzeSyntaxResponse response) {
         boolean hasSubject = false;
         boolean hasMainVerb = false;
@@ -205,50 +198,6 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
         return calculateCorrectnessScore(response) == 1.0;
     }
 
-    /*
-    public boolean isValidSentenceFlexible(AnalyzeSyntaxResponse response) {
-        List<Token> tokens = response.getTokensList();
-
-        boolean hasSubjectLike = false;
-        boolean hasVerbLike = false;
-        int meaningfulTokens = 0;
-
-        for (int i = 0; i < tokens.size(); i++) {
-            Token token = tokens.get(i);
-            PartOfSpeech.Tag tag = token.getPartOfSpeech().getTag();
-            String lemma = token.getLemma().toLowerCase();
-
-            // Count meaningful words (exclude punctuation, unknowns)
-            if (tag != PartOfSpeech.Tag.PUNCT && tag != PartOfSpeech.Tag.X) {
-                meaningfulTokens++;
-            }
-
-            // Consider NOUN, PRONOUN, PROPER NOUN as subject-like
-            if (tag == PartOfSpeech.Tag.NOUN ||
-                    tag == PartOfSpeech.Tag.PRON) {
-                hasSubjectLike = true;
-            }
-
-            // Consider VERB or lemma like "is", "are", etc. as verb-like
-            if (tag == PartOfSpeech.Tag.VERB || lemma.equals("be") || lemma.equals("is") || lemma.equals("are")) {
-                hasVerbLike = true;
-            }
-
-            // Imperative case: sentence starts with a verb and has 1+ other words
-            if (i == 0 && tag == PartOfSpeech.Tag.VERB && meaningfulTokens >= 2) {
-                return true; // Imperative sentence like "Eat the cake"
-            }
-        }
-
-        // Declarative case: has at least subject and verb
-        return meaningfulTokens >= 2 && hasSubjectLike && hasVerbLike;
-    }
-    */
-
-
-
-
-
     /**
      * Summerizes the response from ModerateTextResponse
      */
@@ -256,14 +205,6 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
         StringBuilder sb = new StringBuilder();
 
         List<ClassificationCategory> categories = response.getModerationCategoriesList();
-
-        // Non penso ci sia mai un caso in cui le categorie siano vuote
-        /*
-        if (categories.isEmpty()) {
-            return "No harmful content detected.";
-        }
-
-         */
 
         sb.append("MODERATION CATEGORIES FOUND:\n");
         for (ClassificationCategory category : categories) {
@@ -277,7 +218,7 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
                     .append("\n");
         }
 
-        // Caso in cui non ci sono categorie di nota (per adesso solo categorie che hanno piu' del 50% passano)
+        // For when there aren't notable categories (for now it applies only to categories that don't reach 50%)
         if(sb.toString().equals("MODERATION CATEGORIES FOUND:\n")) return "";
         return sb.toString();
     }

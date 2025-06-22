@@ -11,13 +11,13 @@ This [adjective] [noun]
 That [noun]
 An [adjective] [noun]
 The last [noun]
-A pair of [plural_noun]
-The [noun] of [plural_noun]
+A pair of [pluralnoun]
+The [noun] of [pluralnoun]
 The idea of a [noun]
 The spirit of the [noun]
 An entire [noun]
 Just one [noun]
-Several [plural_noun]
+Several [pluralnoun]
 An old [adjective] [noun]
 A shiny [noun]
 The flying [noun]
@@ -32,13 +32,13 @@ The invisible [noun]
 An exhausted [noun]
 The [noun] nobody trusts
 A programmable [noun]
-This annoying [noun]
+These [adjective] [pluralnoun]
 A digital [noun]
 That talking [noun]
 A suspicious [noun]
-The broken [noun]
+The broken [pluralnoun]
 An unstable [noun]
-The legendary [noun]
+The legendary [pluralnoun]
 A fearless [noun]
 The chaotic [noun]
 The smallest [noun]
@@ -55,32 +55,32 @@ The unreliable [noun]
 A colorful [noun]
 The synthetic [noun]
 A binary [noun]
-The magnetic [noun]
+The magnetic [pluralnoun]
 An optimistic [noun]
 The emotional [noun]
 The compact [noun]
 A recursive [noun]
 The remote [noun]
-The virtual [noun]
+The virtual [pluralnoun]
 A modular [noun]
 The pixelated [noun]
 The abstract [noun]
 A hypothetical [noun]
-The conceptual [noun]
+The conceptual [pluralnoun]
 The nostalgic [noun]
 An algorithmic [noun]
 A misaligned [noun]
 The distorted [noun]
 A cracked [noun]
-The customized [noun]
+The customized [pluralnoun]
 The smart [noun]
 A sarcastic [noun]
-The timid [noun]
+The [adjective] [pluralnoun]
 A brave [noun]
 The half-broken [noun]
 An outdated [noun]
 A smooth [noun]
-The aggressive [noun]
+The aggressive [pluralnoun]
 The symmetrical [noun]
 An oddly-shaped [noun]
 A time-traveling [noun]
@@ -93,43 +93,68 @@ The anti-social [noun]
 The synthetic [noun] from the future
 An abandoned [noun]
 The [adjective] [noun] from yesterday
-That [adjective] [noun] you forgot
+That [adjective] [noun]
 My personal [noun]
-The only remaining [noun]
+The only remaining [pluralnoun]
 A reprogrammed [noun]
 
 PART 2:
 
+abruptly [verb]s the [noun]
+slowly [verb]s
+barely [verb]s
+brightly [verb]s
+deeply [verb]s
+faintly [verb]s
+freely [verb]s
+gladly [verb]s
+lightly [verb]s
+loudly [verb]s
+mainly [verb]s
+nearly [verb]s
+proudly [verb]s
+quietly [verb]s
+rarely [verb]s
+roughly [verb]s
+suddenly [verb]s
+tightly [verb]s
+warmly [verb]s
+softly [verb]s
+smoothly [verb]s
+suddenly [verb]s
+gently [verb]s the [noun]
+accidentally [verb]s
+[verb]s
 [verb]s the [adjective] [noun]
 [verb]s into the [noun]
+[verb]s rapidly
 [verb]s around a [adjective] [noun]
 [verb]s quietly under the [noun]
-[verb]s with [plural_noun]
+[verb]s with [pluralnoun]
 [verb]s before the [noun] arrives
 [verb]s near the [adjective] [noun]
 [verb]s beside a [adjective] [noun]
-[verb]s while humming [noun]s
+[verb]s and [verb]s [pluralnoun]
 [verb]s under [adjective] light
 [verb]s into the [noun]'s shadow
 [verb]s until the [noun] [verb]s back
 [verb]s above the [adjective] [noun]
-[verb]s through a [noun] field
+[verb]s through the [pluralnoun]
 [verb]s like a [adjective] [noun]
 [verb]s because of the [noun]
 [verb]s without warning the [noun]
 [verb]s behind every [noun]
-[verb]s to escape the [adjective] [noun]
+[verb]s to [verb] the [adjective] [noun]
 [verb]s beyond the [noun]'s limits
 [verb]s despite the [noun]'s fear
-[verb]s as if it were a [noun]
-[verb]s among the [plural_noun]
-[verb]s between logic and [noun]
-[verb]s to mimic the [noun]
+[verb]s as if it's a [noun]
+[verb]s among the [pluralnoun]
+[verb]s between [noun] and [noun]
+[verb]s to the [noun]
 [verb]s exactly like the [noun]
 [verb]s like no other [noun] ever could
-[verb]s because the [noun] told it to
+[verb]s for the [pluralnoun]
 [verb]s to confuse the [noun]
-[verb]s beneath the [adjective] [noun]
 [verb]s through layers of [noun]
 [verb]s in sync with the [noun]
 [verb]s every time the [noun] blinks
@@ -143,20 +168,20 @@ PART 2:
 [verb]s inside a [adjective] [noun]
 [verb]s across dimensions of [noun]
 [verb]s during [noun] events
-[verb]s in patterns of [plural_noun]
+[verb]s in patterns of [pluralnoun]
 [verb]s like a trained [noun]
 [verb]s at the speed of [noun]
 [verb]s under a [adjective] sky
 [verb]s during [adjective] storms
-[verb]s whenever [plural_noun] gather
+[verb]s whenever [pluralnoun] gather
 [verb]s as if nothing matters
-[verb]s while reciting [plural_noun]
+[verb]s while reciting [pluralnoun]
 [verb]s in a trance of [noun]
-[verb]s through forgotten [plural_noun]
+[verb]s through forgotten [pluralnoun]
 [verb]s beneath a dome of [noun]
 [verb]s despite knowing the [noun]
 [verb]s during the [adjective] ceremony
-[verb]s while spinning [plural_noun]
+[verb]s while spinning [pluralnoun]
 [verb]s around the idea of [noun]
 [verb]s in the name of [noun]
 [verb]s to protect the [adjective] [noun]
@@ -166,135 +191,132 @@ PART 2:
 [verb]s under a veil of [noun]
 [verb]s whenever [noun]s collapse
 [verb]s with a glint of [noun]
-[verb]s to the rhythm of [plural_noun]
+[verb]s to the rhythm of [pluralnoun]
 [verb]s in the glow of [noun]
 [verb]s because [noun]s never stop
-[verb]s during unexpected [plural_noun]
+[verb]s during unexpected [pluralnoun]
 [verb]s thanks to the [adjective] [noun]
 [verb]s in place of the [noun]
-[verb]s beneath layers of [noun]
-[verb]s inside encrypted [plural_noun]
-[verb]s just to entertain the [noun]
-[verb]s amid floating [plural_noun]
+[verb]s inside [adjective] [pluralnoun]
+[verb]s just to [verb] the [noun]
 [verb]s without checking the [noun]
 [verb]s without asking [noun]
-[verb]s through compressed [plural_noun]
-[verb]s surrounded by glowing [noun]s
+[verb]s through [adjective] [pluralnoun]
+[verb]s surrounded by glowing [pluralnoun]
 [verb]s to simulate [adjective] behavior
-[verb]s near vibrating [noun]s
-[verb]s with ancient [plural_noun]
-[verb]s after the [noun] is gone
-[verb]s to avoid the [noun]
+[verb]s near vibrating [pluralnoun]
+[verb]s with [adjective] [pluralnoun]
 [verb]s as a tribute to [noun]
-[verb]s to confuse [plural_noun]
-[verb]s because it's afraid of [noun]
-[verb]s in harmony with [plural_noun]
-[verb]s until the [adjective] [noun] returns
-[verb]s under constant [noun] pressure
-[verb]s in opposition to [plural_noun]
+[verb]s to confuse [pluralnoun]
+[verb]s because it's afraid of [pluralnoun]
+[verb]s in harmony with [pluralnoun]
+[verb]s under [adjective] [pluralnoun]
+[verb]s in opposition to [pluralnoun]
 [verb]s on behalf of the [noun]
 [verb]s across streams of [noun]
-[verb]s while observing [plural_noun]
+[verb]s while observing [pluralnoun]
 [verb]s thanks to an ancient [noun]
 
 
 PART 3:
 
-into the unknown [noun]
-without the slightest [noun]
-under the [adjective] sky
-for reasons involving [plural_noun]
-until the [noun] breaks
-as a reaction to [noun]
-like a true [adjective] [noun]
-through the lens of [noun]
-before the world ends
-in case of emergency [noun]
-beside the forgotten [noun]
-with absolutely no [noun]
-during a [adjective] night
-before someone notices
-within the virtual [noun]
-for the love of [plural_noun]
-in honor of the [adjective] [noun]
-after consulting the [noun]
-with the help of a [noun]
-among shadows and [plural_noun]
-at the edge of the [noun]
-without altering [plural_noun]
-next to the ancient [noun]
-as if nothing happened
-by the power of [noun]
-in full view of [plural_noun]
-beneath a mountain of [plural_noun]
-as a tribute to [noun]
-alongside forgotten [plural_noun]
-hidden under layers of [noun]
-in memory of the [adjective] [noun]
-for reasons only [noun] understands
-along the path of [plural_noun]
-at the cost of a [noun]
-with no regard for [plural_noun]
-across dimensions of [plural_noun]
-while chanting [plural_noun]
-from the core of the [noun]
-on top of the last [noun]
-in the presence of [plural_noun]
-right before the [noun] shatters
-in the wake of [adjective] disasters
-between flashes of [noun]
-at the rhythm of [plural_noun]
-before the clock resets
-next to the eternal [noun]
-with memories of [plural_noun]
-without time or [noun]
-along the border of [plural_noun]
-despite the consequences
-within a forgotten [noun]
-in place of a [adjective] [noun]
-after millennia of [noun]
-to please the [adjective] [noun]
-to the amusement of [plural_noun]
-beyond comprehension
-under the veil of [plural_noun]
-as a sign of respect
-above the logic of [noun]
-until further [plural_noun] arrive
-before the algorithm restarts
-for no logical [noun]
-at the threshold of [plural_noun]
-as punishment for the [noun]
-due to technical [plural_noun]
-beside an old [noun]
-as the legend foretold
-among clusters of [plural_noun]
-on the advice of [noun]
-beneath binary [plural_noun]
-with a hint of [noun]
-to trigger the [noun] reaction
-without touching [plural_noun]
-as the prophecy demands
-inside encrypted [noun]s
-fueled by [adjective] [noun]
-as chaos unfolds
-near the ruins of [plural_noun]
-despite repeated [noun] warnings
-to escape the [adjective] system
-through layers of [noun]
-between two [plural_noun]
-with dignity and [noun]
-after a burst of [plural_noun]
-between flickers of [noun]
-as a form of resistance
-beyond the [noun] barrier
-in defiance of [plural_noun]
-in the middle of [noun] silence
-across the digital [noun]
-through hyperspace [plural_noun]
-by choice, not by [noun]
-after sacrificing [plural_noun]
-at the core of [noun] existence
-until balance is restored
-with nothing but [plural_noun]
-
-
+beyond the [adjective] [noun] of [pluralnoun]
+with [pluralnoun], [noun], and a [adjective] [noun]
+after the [noun] [verb]s among [pluralnoun]
+inside the [adjective] [noun] of forgotten [pluralnoun]
+while [pluralnoun] [verb] through [pluralnoun] and [noun]
+under [pluralnoun] shaped by [adjective] [noun]
+despite the [adjective] [pluralnoun] over the [noun]
+as [pluralnoun] [verb] the [adjective] [noun]
+like a [noun] in a world of [pluralnoun] and [pluralnoun]
+when a [noun] [verb]s the [noun] of [adjective] [pluralnoun]
+to [verb] a [noun] across [adjective] [pluralnoun]
+between the [noun], the [pluralnoun], and the [noun]
+fueled by [pluralnoun], [noun] and [adjective] desires
+inside a [noun] built from [pluralnoun] and [noun]
+for a [adjective] [noun] to [verb] beyond [pluralnoun]
+beneath the [adjective] and [adjective] [pluralnoun]
+surrounded by [adjective] [pluralnoun] and silent [noun]
+during [noun], [pluralnoun], and [adjective] [pluralnoun]
+against the will of the [adjective] [noun] of [pluralnoun]
+to awaken the [noun] from [adjective] [pluralnoun]
+beyond [noun], [pluralnoun], and [adjective] echoes
+among [pluralnoun] with [noun] and [adjective] symbols
+from [pluralnoun], through [noun], to [adjective] [noun]
+with the [adjective] [noun] of [pluralnoun] in mind
+under [pluralnoun] and [adjective] [noun]
+beside [adjective], [adjective] [pluralnoun]
+before [pluralnoun] can [verb] the [adjective] [noun]
+chasing [pluralnoun] through [adjective] [noun]
+between [pluralnoun], [pluralnoun], and [noun]
+without [pluralnoun] or the [adjective] [noun] to [verb]
+for [noun], [noun], and the [adjective] [pluralnoun]
+even for the [pluralnoun] and the [adjective] [noun]
+with a [noun] in the [noun] and [pluralnoun] on the [noun]]
+after [pluralnoun] failed to [verb] the [noun]
+like [pluralnoun] trapped inside a [adjective] [noun]
+guided by [pluralnoun], [noun], and [adjective] [noun]
+with [pluralnoun] falling from the [adjective] [noun]
+from the [noun] of [pluralnoun] to [verb] again
+despite [pluralnoun] and the [adjective] [noun]
+through [pluralnoun] and [noun] without [pluralnoun]
+once [pluralnoun] [verb] the [adjective] [noun]
+beneath [pluralnoun] shaped by [noun] and [noun]
+across [adjective] [pluralnoun] and [adjective] [noun]
+as [pluralnoun] [verb] through [adjective] [noun]
+to [verb] with [pluralnoun] and the [noun] itself
+beyond [noun], [adjective] [pluralnoun], and [noun]
+after [noun] [verb], leaving [pluralnoun] to [verb]
+at the center of [adjective] [pluralnoun]
+through [pluralnoun] to [verb] the [adjective] [noun]
+in search of [pluralnoun], [noun], and [adjective] [noun]
+while the [noun] [verb]s the [noun] from [pluralnoun]
+after [pluralnoun] [verb] the [adjective] [noun]
+across [noun], [noun], and [adjective] [pluralnoun]
+in defiance of [adjective] [pluralnoun]
+through [noun] and [noun], among [pluralnoun]
+with the [adjective] [noun] to [verb] the [pluralnoun]
+among [pluralnoun] summoned by the [noun] [verb]
+beside [noun], [pluralnoun], and [adjective] [noun]
+for [pluralnoun] to [verb] a [adjective] [noun]
+within [adjective] [pluralnoun] shaped by [noun]
+under [noun], [pluralnoun], and [adjective] [noun]
+until [pluralnoun] [verb] the [adjective] [noun]
+for [noun], not for [pluralnoun] or [noun]
+inside the [adjective] [noun] of [adjective] [pluralnoun]
+through [adjective] [pluralnoun] and [pluralnoun]
+when [pluralnoun] [verb] among [adjective] [noun]
+in the [noun] of [noun], [noun], and [pluralnoun]
+without [pluralnoun], only [noun] and [verb]
+on the [pluralnoun] of [adjective] [pluralnoun] and [noun]
+before [pluralnoun] [verb] the [adjective] [noun]
+with [pluralnoun], [pluralnoun], and a single [noun]
+and [verb]s among [adjective] [pluralnoun]
+beneath the [adjective] [noun] of [pluralnoun]
+after [pluralnoun] [verb] into [adjective] [noun]
+across [pluralnoun] without [pluralnoun [noun]
+beside [noun], [pluralnoun], and haunting [verb]s
+with [noun], [noun], and endless [pluralnoun]
+until [pluralnoun] [verb] the [adjective] [noun]
+among [pluralnoun], beyond [noun], and [noun]
+after the [adjective] [noun] of [pluralnoun]
+at the feet of [pluralnoun], [noun], and [noun]
+under the [adjective] [noun] of [pluralnoun]
+as [pluralnoun] rise above [noun] and [adjective] [noun]
+for [pluralnoun] who [verb] through [noun]
+beneath [pluralnoun], [noun] [verb]s in silence
+to [verb] through [adjective] [pluralnoun] and [noun]
+behind [pluralnoun], [noun], and flickering [noun]
+while [pluralnoun] [verb] in the [adjective] [noun]
+for [noun] to [verb] among [pluralnoun]
+alongside [pluralnoun], [adjective] [pluralnoun], and [noun]
+between [noun], [pluralnoun], and what remains
+above [pluralnoun], under [adjective] [noun]
+without [pluralnoun] to [verb] the [noun] again
+in case [pluralnoun] [verb] the [adjective] [noun]
+with [adjective] [pluralnoun], [noun], and [noun]
+after [noun] [verb]s [adjective] [pluralnoun]
+for the simple fact that [pluralnoun] [verb] through [noun]
+until [pluralnoun] [verb] the [adjective] [noun]
+beyond [pluralnoun], [noun], and reason itself
+from [pluralnoun] and [noun] to [verb] everything

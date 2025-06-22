@@ -1,4 +1,4 @@
-noun:
+#noun
 
 apple
 man
@@ -469,7 +469,7 @@ present
 moment
 
 
-pluralNoun:
+#pluralnoun
 
 apples
 men
@@ -940,7 +940,7 @@ presents
 moments
 
 
-verb:
+#verb
 
 accept  
 add  
@@ -1289,8 +1289,7 @@ cough
 count  
 crack  
 crash  
-crawl  
-cross  
+crawl
 crush  
 cure  
 curl  
@@ -1566,7 +1565,7 @@ push
 put  
 
 
-adjective:
+#adjective
 
 abandoned
 able
