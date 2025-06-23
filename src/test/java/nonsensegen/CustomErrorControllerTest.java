@@ -1,5 +1,6 @@
 package nonsensegen;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -7,7 +8,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CustomErrorController.class)
@@ -25,6 +29,14 @@ public class CustomErrorControllerTest {
         };
     }
 
+    @BeforeEach
+    void setup() {
+        // Configure standalone setup with view resolver
+        mockMvc = MockMvcBuilders.standaloneSetup(new CustomErrorController())
+                .setViewResolvers(new InternalResourceViewResolver())
+                .build();
+    }
+
     @Test
     void error_404_Returns404View() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/error")
@@ -37,10 +49,10 @@ public class CustomErrorControllerTest {
 
     @Test
     void error_500_Returns500View() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/error")
+        mockMvc.perform(get("/error")
                         .with(errorAttributes(500, "Server Error")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("error/500"))
+                .andExpect(view().name("error/500"))  // Verify view name
                 .andExpect(model().attribute("status", 500))
                 .andExpect(model().attribute("error", "Server Error"));
     }

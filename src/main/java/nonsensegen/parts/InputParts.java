@@ -19,15 +19,21 @@ public class InputParts extends AbstractParts {
      * Extracts and fills the categories, unifying VERB+PRT and PRT+VERB
      */
     public void extractParts(AnalyzeSyntaxResponse response) {
+        // Clear the map
         partMap.clear();
 
+        // List of tokens, which are the blocks that form the sentence
         List<Token> tokens = response.getTokensList();
         int i = 0;
+
         while (i < tokens.size()) {
+            // Get the word itself
             String word = tokens.get(i).getText().getContent();
+            // Get the associated part of speech "tag"
             String tag = tokens.get(i).getPartOfSpeech().getTag().name();
 
-            // Case 1: PRT + VERB (e.g.: "to eat")
+            // Some edge cases, where we have to make some combining
+            // Case 1: PRT ("Particle or other function word") + VERB (e.g.: "to eat")
             if (tag.equals("PRT") && i + 1 < tokens.size()
                     && tokens.get(i + 1).getPartOfSpeech().getTag().name().equals("VERB")) {
                 String combined = word + " " + tokens.get(i + 1).getText().getContent();
@@ -38,7 +44,7 @@ public class InputParts extends AbstractParts {
                 continue;
             }
 
-            // Case 2: VERB + PRT (e.g.: "pick up")
+            // Case 2: VERB + PRT ("Particle or other function word") (e.g.: "pick up")
             if (tag.equals("VERB") && i + 1 < tokens.size()
                     && tokens.get(i + 1).getPartOfSpeech().getTag().name().equals("PRT")) {
                 String combined = word + " " + tokens.get(i + 1).getText().getContent();
@@ -49,6 +55,8 @@ public class InputParts extends AbstractParts {
                 continue;
             }
 
+            // Add the word to the appropriate category. If the category isn't defined, it will be added to the
+            // "other" list, with its tag appended
             switch (tag) {
                 case "ADJ": this.getAdjective().add(word); break;
                 case "NOUN": this.getNoun().add(word); break;

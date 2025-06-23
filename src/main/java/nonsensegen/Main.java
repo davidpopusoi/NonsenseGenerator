@@ -5,6 +5,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+// Used only for testing the credentials
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello, World!");

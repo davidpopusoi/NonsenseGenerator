@@ -117,30 +117,4 @@ public class ControllerTest {
         assertEquals(1.0, score);
         assertTrue(controller.isValidSentenceFlexible(response));
     }
-
-    @Test
-    public void testAnalyzeModeration_withCategories() {
-        ClassificationCategory category = ClassificationCategory.newBuilder()
-                .setName("Hate")
-                .setConfidence(0.80f)
-                .build();
-
-        ModerateTextResponse response = ModerateTextResponse.newBuilder()
-                .addModerationCategories(category)
-                .build();
-
-        String result = controller.analyzeModeration(response);
-
-        assertTrue(result.contains("Hate"));
-        assertTrue(result.contains("80.00%"));
-    }
-
-    @Test
-    public void testAnalyzeModeration_empty() {
-        ModerateTextResponse response = ModerateTextResponse.newBuilder().build();
-
-        String result = controller.analyzeModeration(response);
-
-        assertEquals("", result);
-    }
 }

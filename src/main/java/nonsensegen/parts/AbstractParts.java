@@ -4,6 +4,8 @@ import java.util.*;
 
 public abstract class AbstractParts {
 
+    // Map that holds all our words, where the key is part of speech and the value is a String List with the words that
+    // are have been identified to belong to those parts of speech
     protected Map<String, List<String>> partMap = new HashMap<>();
 
     protected abstract void fillParts();
@@ -18,6 +20,8 @@ public abstract class AbstractParts {
     public List<String> getCategoryOrCreate(String category) {
         return partMap.computeIfAbsent(category.toLowerCase(), k -> new ArrayList<>());
     }
+
+    // Getters for each category. If one doesn't exist, it will be created
 
     public List<String> getVerb(){
         return this.getCategoryOrCreate("verb");
