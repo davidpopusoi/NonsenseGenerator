@@ -1,4 +1,4 @@
-PART 1:
+#part1
 
 The [adjective] [noun]
 A [noun]
@@ -98,7 +98,7 @@ My personal [noun]
 The only remaining [pluralnoun]
 A reprogrammed [noun]
 
-PART 2:
+#part2
 
 abruptly [verb]s the [noun]
 slowly [verb]s
@@ -218,7 +218,7 @@ accidentally [verb]s
 [verb]s thanks to an ancient [noun]
 
 
-PART 3:
+#part3
 
 beyond the [adjective] [noun] of [pluralnoun]
 with [pluralnoun], [noun], and a [adjective] [noun]

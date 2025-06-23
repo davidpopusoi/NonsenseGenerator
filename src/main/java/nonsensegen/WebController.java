@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -57,23 +60,61 @@ public class WebController {
 
         if (confirmed == null) {
             model.addAttribute("showConfirmation", true);
-            /*
-            model.addAttribute("sentence", sentence);
-            controller.analyzeSentence(sentence);
-            if (!controller.inputParts.getInvalid().isEmpty()) {
-                model.addAttribute("showError", true);
-                model.addAttribute("invalidWords", controller.inputParts.getInvalid());
-            } else {
-                model.addAttribute("showConfirmation", true);
-            }
-            */
             return "index";
         }
 
         if ("yes".equalsIgnoreCase(confirmed)) {
-            String result = controller.analyzeSentence(sentence);
-            model.addAttribute("output", result);
+
+            nonsensegen.Controller.ControllerResponse result = controller.analyzeSentence(sentence);
+            model.addAttribute("output", true);
             model.addAttribute("showDownload", true);
+
+            if (result != null) {
+
+                if (!result.isEnglishSentence) model.addAttribute("errorFound", "Sorry, at the moment only the English language is supported");
+                else if (result.hasForeign) model.addAttribute("errorFound", "Be sure to insert only English words!");
+                else if (!result.isValid) model.addAttribute("errorFound", "Sentence is incorrect");
+                else {
+                    model.addAttribute("valid", true);
+
+                    List<Map<String, String>> tokens = result.response.getTokensList().stream().map(token -> {
+                        Map<String, String> tokenData = new HashMap<>();
+                        tokenData.put("word", token.getText().getContent());
+                        tokenData.put("pos", token.getPartOfSpeech().getTag().name());
+                        return tokenData;
+                    }).toList();
+
+                    List<String> invalidWords = controller.inputParts.getInvalid();
+
+                    /*
+                    // Sezione parole non valide (tag X)
+                    if (!inputParts.getInvalid().isEmpty()) {
+
+                    }
+                     */
+
+                    Map<String, List<String>> categories = controller.inputParts.getPartMap();
+
+                    List<Map<String, Object>> moderationFlags = new ArrayList<>();
+
+                    if (result.moderateTextResponse != null) {
+                        moderationFlags = result.moderateTextResponse.getModerationCategoriesList().stream()
+                                .filter(cat -> cat.getConfidence() >= 0.55)
+                                .map(cat -> {
+                                    Map<String, Object> flag = new HashMap<>();
+                                    flag.put("name", cat.getName());
+                                    flag.put("confidence", cat.getConfidence());
+                                    return flag;
+                                }).toList();
+                    }
+
+                    model.addAttribute("tokens", tokens);
+                    model.addAttribute("invalidWords", invalidWords);
+                    model.addAttribute("categories", categories);
+                    model.addAttribute("moderationFlags", moderationFlags);
+                }
+
+            }
             return "index";
         }
 

@@ -12,6 +12,10 @@ public abstract class AbstractParts {
 
     protected abstract void fillParts();
 
+    public Map<String, List<String>> getPartMap(){
+        return this.partMap;
+    }
+
     /**
      * Returns the category if found with the provided String, otherwise adds the String as a key with a new List to the map
      */

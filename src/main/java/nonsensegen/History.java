@@ -19,7 +19,7 @@ public class History {
     public void saveFinalToHistory(String sentence) {
         if(history.size() >= MAX_RECENT) history.remove(0);
         if(!history.contains(sentence)) {
-            LOGGER.info("Saved a sentence to history");
+            //LOGGER.info("Saved a sentence to history");
             history.add(sentence);
         }
     }

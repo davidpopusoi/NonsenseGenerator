@@ -10,77 +10,74 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
-public class Controller { // Da rinominare a qualcosa come "NonsenseService"
+public class Controller {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
     @Autowired
-    private GoogleNlpService googleNlpService;
+    GoogleNlpService googleNlpService;
     @Autowired
     public InputParts inputParts;
     @Autowired
-    private DictionaryParts dictionaryParts;
+    DictionaryParts dictionaryParts;
     @Autowired
-    private Template template;
+    Template template;
     @Autowired
     public History history;
 
     private static final Pattern ENGLISH_WORDS = Pattern.compile("^[a-zA-Z]+$");
 
-    public String analyzeSentence(String sentence) {
+    public class ControllerResponse{
+
+        public AnalyzeSyntaxResponse response;
+        public ModerateTextResponse moderateTextResponse;
+        public boolean isEnglishSentence = true;
+        public boolean hasForeign = false;
+        public boolean isValid = false;
+
+        public ControllerResponse(AnalyzeSyntaxResponse response){
+            this.response = response;
+        }
+    }
+
+    public @Nullable ControllerResponse analyzeSentence(String sentence) {
         LOGGER.info("Attempting to analyze: \"" + sentence + "\"");
 
         try {
             AnalyzeSyntaxResponse response = googleNlpService.analyzeSyntax(sentence);
+            ControllerResponse cr = new ControllerResponse(response);
 
             if (!isEnglishSentence(sentence)) {
-                return "Sorry, at the moment only English language is supported.";
+                cr.isEnglishSentence = false;
+                //return "Sorry, at the moment only English language is supported.";
             }
 
             if (hasForeign(response)) {
-                return "Be sure to insert only English words.";
+                cr.hasForeign = true;
+                //return "Be sure to insert only English words.";
             }
 
             if (isValidSentenceFlexible(response)){
+                cr.isValid = true;
+
+                ModerateTextResponse moderateTextResponse = googleNlpService.moderateText(sentence);
+                cr.moderateTextResponse = moderateTextResponse;
+
                 // Load the parts found in the input sentence
                 inputParts.extractParts(response);
-
-                // OUTPUT ----------------
-
-                // Output riga per riga (come ora)
-                StringBuilder analysis = new StringBuilder();
-                response.getTokensList().forEach(token ->
-                        analysis.append(token.getText().getContent())
-                                .append(" (")
-                                .append(token.getPartOfSpeech().getTag())
-                                .append(")\n")
-                );
-
-                // Sezione parole non valide (tag X)
-                if (!inputParts.getInvalid().isEmpty()) {
-
-                }
-
-                // Tabella categorie
-                analysis.append(inputParts.getTabellaCategorie());
-
-                // Toxicity
-                // TODO: da mette alla frase finale, non a quella di input
-                analysis.append("\n")
-                        .append(analyzeModeration(googleNlpService.moderateText(sentence)));
-
-                return analysis.toString();
             }
 
-            // TODO: "Killing people is bad" e' incorrect
-            return "Sentence is incorrect";
+            //return "Sentence is incorrect";
+            return cr;
         } catch (Exception e) {
             System.out.println(e);
-            return "Error analyzing text: " + e.getMessage();
+            //return "Error analyzing text: " + e.getMessage();
+            return null;
         }
     }
 
@@ -91,10 +88,10 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     }
 
     /**
-     * Check if the sentence is in English
+     * Checks if the provided sentence is in English
      */
     public boolean isEnglishSentence(String sentence) {
-        // USARE IL METODO DA googleNlpService E NON CREATE ALTRE ISTANZE DI LanguageServiceClient
+        // Use the instance googleNlpService and DO NOT make other instances of LanguageServiceClient
         AnalyzeSyntaxResponse response = googleNlpService.analyzeSyntax(sentence);
         String detectedLanguage = response.getLanguage(); // "en", "it", etc.
 
@@ -102,7 +99,7 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     }
 
     /**
-     * Check if the sentence has foreign elements (rogue spaces, etc.)
+     * Checks if the sentence has foreign elements (rogue spaces, etc.)
      */
     public boolean hasForeign(AnalyzeSyntaxResponse response){
         boolean englishWords = false;
@@ -123,7 +120,7 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
     }
 
     /**
-     * Check if the sentence's structure is "correct"
+     * Checks if the sentence's structure is "correct"
      */
     public static double calculateCorrectnessScore(AnalyzeSyntaxResponse response) {
         boolean hasSubject = false;
@@ -165,7 +162,7 @@ public class Controller { // Da rinominare a qualcosa come "NonsenseService"
 
             Tag rootTag = rootToken.getPartOfSpeech().getTag();
 
-            LOGGER.info("Imperative check, hasSubject: " + hasSubject + ", tag: " + rootTag);
+            //LOGGER.info("Imperative check, hasSubject: " + hasSubject + ", tag: " + rootTag);
 
             if (rootTag == Tag.VERB) {
 

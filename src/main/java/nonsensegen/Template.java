@@ -6,11 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,32 +36,45 @@ public class Template {
      * Da chiamare solamente DOPO che l'input e' gia' stato controllato e diviso in parti
      */
     private String genTemplate() {
-        try {
-            List<String> templates = Files.readAllLines(TEMPLATES);
+        try (BufferedReader reader = Files.newBufferedReader(TEMPLATES)) {
+            Map<Integer, List<String>> parts = Map.of(
+                    1, new ArrayList<>(),
+                    2, new ArrayList<>(),
+                    3, new ArrayList<>()
+            );
 
-            /*if (templates.isEmpty()) {
-                str = "No templates found.";
-                return;
-            }*/
+            int currentPart = 0;
 
-            // Suddivide la lista di template in tre "sottoliste", ciascuna contenente una diversa parte del template
-            Random randTempl = new Random();
-            List<String> parte1 = templates.subList(2, 99);   // dalla riga 3 alla 99 inclusa
-            List<String> parte2 = templates.subList(102, 198); // dalla riga 103 alla 198 inclusa
-            List<String> parte3 = templates.subList(202, 298); // dalla riga 203 alla 298 inclusa
+            for (String line; (line = reader.readLine()) != null; ) {
+                line = line.trim();
 
-            // sceglie casualmente una porzione di template da ciascuna delle tre sottoliste
-            String randPart1 = parte1.get(randTempl.nextInt(parte1.size())).trim();
-            String randPart2 = parte2.get(randTempl.nextInt(parte2.size())).trim();
-            String randPart3 = parte3.get(randTempl.nextInt(parte3.size())).trim();
+                if (line.isEmpty()) continue;
+                if (line.startsWith("#")) {
+                    currentPart++;
+                    continue;
+                }
 
-            str = randPart1 + " " + randPart2 + " " + randPart3;
+                parts.getOrDefault(currentPart, List.of()).add(line);
+            }
+
+            Random rand = new Random();
+            String randPart1 = getRandomLine(parts.get(1), rand);
+            String randPart2 = getRandomLine(parts.get(2), rand);
+            String randPart3 = getRandomLine(parts.get(3), rand);
+
+            str = String.join(" ", randPart1, randPart2, randPart3);
             return str;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            System.out.println(e);
             return "Error reading template file.";
         }
+    }
+
+    private String getRandomLine(List<String> list, Random rand) {
+        if (list == null || list.isEmpty()) return "[MISSING PART]";
+        return list.get(rand.nextInt(list.size())).trim();
     }
 
     public String fillTemplate(String template, DictionaryParts dictionaryParts, InputParts inputParts) {
@@ -71,7 +87,7 @@ public class Template {
             String replacement = getReplacement(category, 0.5, dictionaryParts, inputParts);
 
             // DEBUG
-            LOGGER.info("Placeholder: " + category + " | Replacement: " + replacement);
+            //LOGGER.info("Placeholder: " + category + " | Replacement: " + replacement);
 
             matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
         }
@@ -91,10 +107,10 @@ public class Template {
         List<String> fallback = useDict ? inputList : dictList;
 
         if (!primary.isEmpty()) {
-            LOGGER.info("SELECTED FROM primary, # of parts: " + primary.size());
+            //LOGGER.info("SELECTED FROM primary, # of parts: " + primary.size());
             return primary.get(random.nextInt(primary.size()));
         } else if (!fallback.isEmpty()) {
-            LOGGER.info("SELECTED FROM fallback, # of parts: " + fallback.size());
+            //LOGGER.info("SELECTED FROM fallback, # of parts: " + fallback.size());
             return fallback.get(random.nextInt(fallback.size()));
         } else {
             return "[N/A]";

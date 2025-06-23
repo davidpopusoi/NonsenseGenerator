@@ -21,7 +21,7 @@ public class InputParts extends AbstractParts {
             String word = tokens.get(i).getText().getContent();
             String tag = tokens.get(i).getPartOfSpeech().getTag().name();
 
-            // Caso 1: PRT + VERB (es: "to eat")
+            // Case 1: PRT + VERB (e.g.: "to eat")
             if (tag.equals("PRT") && i + 1 < tokens.size()
                     && tokens.get(i + 1).getPartOfSpeech().getTag().name().equals("VERB")) {
                 String combined = word + " " + tokens.get(i + 1).getText().getContent();
@@ -32,7 +32,7 @@ public class InputParts extends AbstractParts {
                 continue;
             }
 
-            // Caso 2: VERB + PRT (es: "pick up")
+            // Case 2: VERB + PRT (e.g.: "pick up")
             if (tag.equals("VERB") && i + 1 < tokens.size()
                     && tokens.get(i + 1).getPartOfSpeech().getTag().name().equals("PRT")) {
                 String combined = word + " " + tokens.get(i + 1).getText().getContent();
@@ -43,7 +43,6 @@ public class InputParts extends AbstractParts {
                 continue;
             }
 
-            // Normale categorizzazione
             switch (tag) {
                 case "ADJ": this.getAdjective().add(word); break;
                 case "NOUN": this.getNoun().add(word); break;
@@ -63,7 +62,6 @@ public class InputParts extends AbstractParts {
         }
     }
 
-    // Tabella testuale delle categorie
     public String getTabellaCategorie() {
         StringBuilder table = new StringBuilder();
         table.append("\nSYNTAX TABLE\n");

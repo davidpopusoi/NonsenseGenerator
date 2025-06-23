@@ -29,6 +29,7 @@
                 <button type="submit">Analyze</button>
             </form>
 
+            <!-- INPUT SENTENCE -->
             <div class="container" th:if="${sentence != null}" >
                 <h3 class="label">Entered sentence:</h3>
 
@@ -36,6 +37,7 @@
                     <span th:text="${sentence}"></span>
                 </div>
 
+                <!-- CONFIRMATION TO ANALYSE -->
                 <div class="confirm-row" th:if="${showConfirmation}">
                     <span class="confirm-text">Do you want to analyze this sentence?</span>
                     <div class="confirm-buttons">
@@ -48,24 +50,70 @@
                 </div>
             </div>
 
-            <!-- SENTENCE ANALYSIS -->
+            <!-- SENTENCE ANALYSIS RESULTS -->
             <div class="analysis-container" th:if="${output}">
-                <h3>Result:</h3>
-                <pre th:text="${output}"></pre>
-                <p id="generated" class="text-lg mb-6" th:text="${generated != null} ? ${generated} : 'No sentence generated yet.'">
+                <h3 class="label">Result:</h3>
+
+                <div class="error">
+                    <span th:text="${errorFound}"></span>
+                </div>
+
+                <div class="tokens" th:if="${valid}">
+                    <h3>Tokens:</h3>
+                    <ul>
+                        <li th:each="t : ${tokens}">
+                            <span th:text="${t.word}"></span>
+                            (<span th:text="${t.pos}"></span>)
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="invalid" th:if="${valid}">
+                    <h3>Invalid Words:</h3>
+                    <ul>
+                        <li th:each="w : ${invalidWords}" th:text="${w}"></li>
+                    </ul>
+                </div>
+
+                <div class="categories" th:if="${valid}">
+                    <h3>Categories:</h3>
+                    <div th:each="entry : ${categories}">
+                        <strong th:text="${entry.key}"></strong>:
+                        <span th:each="word : ${entry.value}" th:text="${word + ' '}"></span>
+                    </div>
+                </div>
+
+                <div class="moderation" th:if="${valid}">
+                    <h3>Moderation:</h3>
+                    <ul>
+                        <li th:each="flag : ${moderationFlags}">
+                            <span th:text="${flag.name}"></span>:
+                            <span th:text="${#numbers.formatDecimal(flag.confidence * 100, 1, 2)} + '%'"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- SENTENCE GENERATION -->
+                <h3 id="generated" class="text-lg mb-6" th:text="${generated != null} ? ${generated} : 'No sentence generated yet.'">
                     No sentence generated yet.
-                </p>
+                </h3>
             </div>
 
+            <!-- BOTTOM BUTTON ROW -->
             <div class="buttons-row" th:if="${output}">
+                <!-- GENERATE SENTENCE BUTTON -->
                 <button onclick="generateSentence()">
                     Generate New Sentence
                 </button>
+
+                <!-- BACK HOME BUTTON -->
                 <form th:action="@{/}" method="get">
                     <button type="submit">
                         Go back
                     </button>
                 </form>
+
+                <!-- DOWNLOAD HISTORY BUTTON -->
                 <form th:if="${showDownload}" action="#" th:action="@{/download}" method="get">
                     <input type="hidden" name="sentence" th:value="${sentence}" />
                     <button type="submit" class="btn btn-primary">Download Analysis</button>
