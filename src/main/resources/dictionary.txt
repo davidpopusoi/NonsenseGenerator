@@ -1287,8 +1287,7 @@ copy
 correct  
 cough  
 count  
-crack  
-crash  
+crack
 crawl
 crush  
 cure  

@@ -6,10 +6,6 @@ public abstract class AbstractParts {
 
     protected Map<String, List<String>> partMap = new HashMap<>();
 
-    public AbstractParts() {
-        fillParts();
-    }
-
     protected abstract void fillParts();
 
     public Map<String, List<String>> getPartMap(){

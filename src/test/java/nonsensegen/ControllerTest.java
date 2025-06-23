@@ -15,7 +15,6 @@ import static org.mockito.Mockito.*;
 
 public class ControllerTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerTest.class);
     private Controller controller;
     private GoogleNlpService googleNlpService;
     private InputParts inputParts;
@@ -24,7 +23,7 @@ public class ControllerTest {
     private History history;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         googleNlpService = mock(GoogleNlpService.class);
         inputParts = mock(InputParts.class);
         dictionaryParts = mock(DictionaryParts.class);
@@ -43,23 +42,16 @@ public class ControllerTest {
     public void testAnalyzeSentence_validSentence() {
         String input = "The dog runs.";
 
-        // Mock NLP response
+        // Creates a mock of the Google NLP response
         AnalyzeSyntaxResponse syntaxResponse = TestHelpers.createValidAnalyzeSyntaxResponse("en");
         ModerateTextResponse moderationResponse = TestHelpers.createModerateTextResponse();
 
         when(googleNlpService.analyzeSyntax(input)).thenReturn(syntaxResponse);
         when(googleNlpService.moderateText(input)).thenReturn(moderationResponse);
-        when(inputParts.getTabellaCategorie()).thenReturn("TAB");
 
         Controller.ControllerResponse cr = controller.analyzeSentence(input);
 
-        // TODO: sistemare
-
-        //assert result.contains("dog");
-        //assert result.contains("runs");
-        //assert result.contains("TAB");
-
-        //LOGGER.info("RESULT: " + result);
+        assert cr.isValid;
     }
 
     @Test
@@ -77,17 +69,13 @@ public class ControllerTest {
     @Test
     public void testAnalyzeSentence_englishTrue() {
         AnalyzeSyntaxResponse response = TestHelpers.createValidAnalyzeSyntaxResponse("en");
-        when(googleNlpService.analyzeSyntax(any())).thenReturn(response);
-
-        assertTrue(controller.isEnglishSentence("The dog runs."));
+        assertTrue(controller.isEnglishSentence(response));
     }
 
     @Test
     public void testAnalyzeSentence_englishFalse() {
         AnalyzeSyntaxResponse response = TestHelpers.createValidAnalyzeSyntaxResponse("it");
-        when(googleNlpService.analyzeSyntax(any())).thenReturn(response);
-
-        assertFalse(controller.isEnglishSentence("Il cane corre."));
+        assertFalse(controller.isEnglishSentence(response));
     }
 
     /**

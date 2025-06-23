@@ -1,0 +1,14 @@
+#noun
+apple
+banana
+tree
+
+#verb
+eat
+clean
+drive
+
+#adjective
+red
+happy
+sad

@@ -86,6 +86,16 @@ public class Template {
             String category = matcher.group(1).toLowerCase();
             String replacement = getReplacement(category, 0.5, dictionaryParts, inputParts);
 
+            if ("verb".equals(category)) {
+                int end = matcher.end();  // position just after the placeholder
+                if ((replacement.endsWith("s") || replacement.endsWith("ed")) &&
+                        end < template.length() &&
+                        template.charAt(end) == 's') {
+                    // Drop the final 's' from the replacement
+                    replacement = replacement.substring(0, replacement.length() - 1);
+                }
+            }
+
             // DEBUG
             //LOGGER.info("Placeholder: " + category + " | Replacement: " + replacement);
 

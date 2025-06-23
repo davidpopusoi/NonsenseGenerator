@@ -32,7 +32,7 @@ public class Controller {
 
     private static final Pattern ENGLISH_WORDS = Pattern.compile("^[a-zA-Z]+$");
 
-    public class ControllerResponse{
+    public static class ControllerResponse{
 
         public AnalyzeSyntaxResponse response;
         public ModerateTextResponse moderateTextResponse;
@@ -52,7 +52,7 @@ public class Controller {
             AnalyzeSyntaxResponse response = googleNlpService.analyzeSyntax(sentence);
             ControllerResponse cr = new ControllerResponse(response);
 
-            if (!isEnglishSentence(sentence)) {
+            if (!isEnglishSentence(response)) {
                 cr.isEnglishSentence = false;
                 //return "Sorry, at the moment only English language is supported.";
             }
@@ -90,18 +90,17 @@ public class Controller {
     /**
      * Checks if the provided sentence is in English
      */
-    public boolean isEnglishSentence(String sentence) {
+    public boolean isEnglishSentence(AnalyzeSyntaxResponse response) {
         // Use the instance googleNlpService and DO NOT make other instances of LanguageServiceClient
-        AnalyzeSyntaxResponse response = googleNlpService.analyzeSyntax(sentence);
         String detectedLanguage = response.getLanguage(); // "en", "it", etc.
-
+        //LOGGER.info("DETECTED LANGUAGE: " + detectedLanguage);
         return detectedLanguage.equals("en");
     }
 
     /**
      * Checks if the sentence has foreign elements (rogue spaces, etc.)
      */
-    public boolean hasForeign(AnalyzeSyntaxResponse response){
+    public boolean hasForeign(AnalyzeSyntaxResponse response) {
         boolean englishWords = false;
         boolean foreignWords = false;
 
@@ -109,13 +108,18 @@ public class Controller {
             String word = token.getText().getContent();
             String tag = token.getPartOfSpeech().getTag().name();
 
+            // Check if the word matches the ENGLISH_WORDS pattern
             if (ENGLISH_WORDS.matcher(word).matches()) {
                 englishWords = true;
             } else if (word.trim().length() > 0 && !"PUNCT".equals(tag)) {
-                foreignWords = true;
+                // Check if the word contains only digits
+                if (!word.matches("\\d+")) {
+                    foreignWords = true;
+                }
             }
         }
 
+        LOGGER.info("ENGLISH: " + englishWords + " SPECIAL: " + foreignWords);
         return englishWords && foreignWords;
     }
 

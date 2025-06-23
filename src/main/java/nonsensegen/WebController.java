@@ -72,8 +72,8 @@ public class WebController {
             if (result != null) {
 
                 if (!result.isEnglishSentence) model.addAttribute("errorFound", "Sorry, at the moment only the English language is supported");
-                else if (result.hasForeign) model.addAttribute("errorFound", "Be sure to insert only English words!");
-                else if (!result.isValid) model.addAttribute("errorFound", "Sentence is incorrect");
+                else if (result.hasForeign) model.addAttribute("errorFound", "Be sure you're not using any special characters");
+                else if (!result.isValid) model.addAttribute("errorFound", "The provided sentence doesn't have a correct structure");
                 else {
                     model.addAttribute("valid", true);
 
@@ -86,12 +86,11 @@ public class WebController {
 
                     List<String> invalidWords = controller.inputParts.getInvalid();
 
-                    /*
-                    // Sezione parole non valide (tag X)
-                    if (!inputParts.getInvalid().isEmpty()) {
-
+                    // Wods with the (X) tag
+                    if (!invalidWords.isEmpty()) {
+                        model.addAttribute("invalid", true);
+                        model.addAttribute("invalidWords", invalidWords);
                     }
-                     */
 
                     Map<String, List<String>> categories = controller.inputParts.getPartMap();
 
@@ -109,7 +108,6 @@ public class WebController {
                     }
 
                     model.addAttribute("tokens", tokens);
-                    model.addAttribute("invalidWords", invalidWords);
                     model.addAttribute("categories", categories);
                     model.addAttribute("moderationFlags", moderationFlags);
                 }
@@ -133,8 +131,12 @@ public class WebController {
     @GetMapping("/download")
     @ResponseBody
     public ResponseEntity<Resource> download() throws Exception {
+
+        //if(controller.history.getHistory().isEmpty()) return ResponseEntity.ok().body(new );
+
         Path path = Files.createTempFile("generated", ".txt");
         Files.write(path, controller.history.getHistory());
+
         Resource resource = new FileSystemResource(path);
 
         return ResponseEntity.ok()

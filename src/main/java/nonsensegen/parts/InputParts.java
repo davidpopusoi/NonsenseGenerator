@@ -2,12 +2,18 @@ package nonsensegen.parts;
 
 import com.google.cloud.language.v1.Token;
 import com.google.cloud.language.v1.AnalyzeSyntaxResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
 public class InputParts extends AbstractParts {
+
+    @Autowired
+    public InputParts() {
+        fillParts();
+    }
 
     /**
      * Extracts and fills the categories, unifying VERB+PRT and PRT+VERB
@@ -60,19 +66,6 @@ public class InputParts extends AbstractParts {
             }
             i++;
         }
-    }
-
-    public String getTabellaCategorie() {
-        StringBuilder table = new StringBuilder();
-        table.append("\nSYNTAX TABLE\n");
-        if (!getAdjective().isEmpty()) table.append("ADJECTIVES:      ").append(String.join("   ", getAdjective())).append("\n");
-        if (!getNoun().isEmpty()) table.append("NOUNS:           ").append(String.join("   ", getNoun())).append("\n");
-        if (!getVerb().isEmpty()) table.append("VERBS:           ").append(String.join("   ", getVerb())).append("\n");
-        if (!getNumber().isEmpty()) table.append("NUMBERS:         ").append(String.join("   ", getNumber())).append("\n");
-        if (!getPunct().isEmpty()) table.append("PUNCT:           ").append(String.join("   ", getPunct())).append("\n");
-        if (!getInvalid().isEmpty()) table.append("INVALID WORDS:   ").append(String.join("   ", getInvalid())).append("\n");
-        if (!getOther().isEmpty()) table.append("OTHERS:          ").append(String.join("   ", getOther())).append("\n");
-        return table.toString();
     }
 
     @Override

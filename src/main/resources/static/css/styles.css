@@ -123,23 +123,10 @@ h3.label {
   word-break: break-word;
 }
 
-/* Remove the two-column flex container and replace with a single box */
 .analysis-container {
   width: 100%;
   max-width: 900px;
   margin-bottom: 3rem;
-}
-
-/* Single analysis result box */
-.analysis-result {
-  background-color: #fcf5f3;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-  font-size: 1rem;
-  line-height: 1.5;
-  min-height: 200px;
-  white-space: pre-wrap; /* preserves line breaks if any */
 }
 
 /* Buttons row */

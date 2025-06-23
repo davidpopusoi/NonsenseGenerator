@@ -52,14 +52,12 @@
 
             <!-- SENTENCE ANALYSIS RESULTS -->
             <div class="analysis-container" th:if="${output}">
-                <h3 class="label">Result:</h3>
-
                 <div class="error">
                     <span th:text="${errorFound}"></span>
                 </div>
 
                 <div class="tokens" th:if="${valid}">
-                    <h3>Tokens:</h3>
+                    <h3 class="label">Tokens:</h3>
                     <ul>
                         <li th:each="t : ${tokens}">
                             <span th:text="${t.word}"></span>
@@ -68,23 +66,25 @@
                     </ul>
                 </div>
 
-                <div class="invalid" th:if="${valid}">
-                    <h3>Invalid Words:</h3>
+                <div class="invalid" th:if="${invalid}">
+                    <h3 class="label">Invalid Words:</h3>
                     <ul>
                         <li th:each="w : ${invalidWords}" th:text="${w}"></li>
                     </ul>
                 </div>
 
                 <div class="categories" th:if="${valid}">
-                    <h3>Categories:</h3>
+                    <h3 class="label">Categories:</h3>
                     <div th:each="entry : ${categories}">
                         <strong th:text="${entry.key}"></strong>:
                         <span th:each="word : ${entry.value}" th:text="${word + ' '}"></span>
                     </div>
                 </div>
 
+                <br>
+
                 <div class="moderation" th:if="${valid}">
-                    <h3>Moderation:</h3>
+                    <h3 class="label">Moderation Results:</h3>
                     <ul>
                         <li th:each="flag : ${moderationFlags}">
                             <span th:text="${flag.name}"></span>:
@@ -116,7 +116,7 @@
                 <!-- DOWNLOAD HISTORY BUTTON -->
                 <form th:if="${showDownload}" action="#" th:action="@{/download}" method="get">
                     <input type="hidden" name="sentence" th:value="${sentence}" />
-                    <button type="submit" class="btn btn-primary">Download Analysis</button>
+                    <button type="submit" class="btn btn-primary">Download Generated Sentences</button>
                 </form>
             </div>
         </div>
