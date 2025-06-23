@@ -112,7 +112,7 @@ public class Controller {
             String word = token.getText().getContent();
             String tag = token.getPartOfSpeech().getTag().name();
 
-            // Check if the word matches the WORDS regex, aka if its only alphabetical letters
+            // Check if the word matches the WORDS regex, a.k.a. if it's only alphabetical letters
             if (WORDS.matcher(word).matches()) {
                 englishWords = true;
             }
@@ -210,31 +210,6 @@ public class Controller {
 
     public boolean isValidSentenceFlexible(AnalyzeSyntaxResponse response) {
         return calculateCorrectnessScore(response) == 1.0;
-    }
-
-    /**
-     * Summerizes the response from ModerateTextResponse
-     */
-    public String analyzeModeration(ModerateTextResponse response) {
-        StringBuilder sb = new StringBuilder();
-
-        List<ClassificationCategory> categories = response.getModerationCategoriesList();
-
-        sb.append("MODERATION CATEGORIES FOUND:\n");
-        for (ClassificationCategory category : categories) {
-            float percent = category.getConfidence() * 100;
-            if(percent < 55.0F) continue;
-
-            sb.append("- ")
-                    .append(category.getName())
-                    .append(": ")
-                    .append(String.format("%.2f%%", percent))
-                    .append("\n");
-        }
-
-        // For when there aren't notable categories (for now it applies only to categories that don't reach 50%)
-        if(sb.toString().equals("MODERATION CATEGORIES FOUND:\n")) return "";
-        return sb.toString();
     }
 
     /**

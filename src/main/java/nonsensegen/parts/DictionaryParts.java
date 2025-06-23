@@ -57,7 +57,7 @@ public class DictionaryParts extends AbstractParts{
 
                 } else if (currentCategory != null) {
                     // We're going through a category, each line is a word to be added to the current category,
-                    // until we encounter another another category header (#adjective)
+                    // until we encounter another category header (#adjective)
                     partMap.get(currentCategory).add(line);
                 }
             }

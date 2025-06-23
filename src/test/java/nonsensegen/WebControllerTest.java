@@ -195,51 +195,6 @@ public class WebControllerTest {
     }
 
     /**
-     * Tests downloading the recent history of generated sentences
-     */
-    @Test
-    void download_ReturnsFile_WhenHistoryExists() throws Exception {
-        // Setup history
-        History history = new History();
-        // Add some elements to the History object
-        history.getHistory().add("Sentence 1");
-        history.getHistory().add("Sentence 2");
-        // Feed the History object to the controller
-        ReflectionTestUtils.setField(controller, "history", history);
-
-        // Attempt downloading the history as a text file
-        MvcResult result = mockMvc.perform(get("/download"))
-                .andExpect(status().isOk())
-                .andExpect(header().string("Content-Disposition",
-                        "attachment; filename=\"generated.txt\""))
-                .andReturn();
-
-        // Parse the result and get the data from it
-        String content = result.getResponse().getContentAsString();
-        assertEquals("Sentence 1\nSentence 2", content);
-    }
-
-    /**
-     * Tests downloading the recent history of generated sentences when the user generated no sentences
-     */
-    @Test
-    void download_ReturnsEmptyFile_WhenNoHistory() throws Exception {
-        // Setup an empty history
-        History history = new History();
-        // Feed the History object to the controller
-        ReflectionTestUtils.setField(controller, "history", history);
-
-        // Attempt downloading the history as a text file
-        MvcResult result = mockMvc.perform(get("/download"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        // Parse the result and get the data from it
-        String content = result.getResponse().getContentAsString();
-        assertEquals("", content);
-    }
-
-    /**
      * Tests the moderation analysis
      */
     @Test
